@@ -237,7 +237,7 @@ const PostModal = ({ setUseModal, post }) => {
                           <button onClick={() => {
                             async function replyCOmment()
                             {
-                                const res = await axios.post(import.meta.env.VITE_DOMAIN + `/api/comments/${post._id}/${item._id}/reply`, {text : replyText}, {withCredentials : true})
+                                const res = await axiosInstance.post(import.meta.env.VITE_DOMAIN + `/api/comments/${post._id}/${item._id}/reply`, {text : replyText}, {withCredentials : true})
                                 console.log(res)
                                 setReplyText("")
                                 const newCOmmentsArray = allComments.map((i) => {
