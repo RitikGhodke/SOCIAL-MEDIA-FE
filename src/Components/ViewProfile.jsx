@@ -172,7 +172,7 @@ import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import PrivateAccount from './PrivateAccount'
 import Public from './Public'
-import axios from 'axios'
+import axiosInstance from "../Utils/axiosInstance"
 import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
@@ -187,7 +187,7 @@ const ViewProfile = () => {
       try {
         setLoading(true)
         
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           import.meta.env.VITE_DOMAIN + `/api/profile/${userId}`,
           { withCredentials: true }
         )

@@ -489,7 +489,7 @@
 
 
 
-import axios from 'axios'
+import axiosInstance from "../Utils/axiosInstance"
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -513,7 +513,7 @@ const PrivateAccount = ({ data, setData }) => {
   useEffect(() => {
     async function checkReqStatus() {
       try {
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           import.meta.env.VITE_DOMAIN + `/api/follow-requests/check/${userId}`,
           { withCredentials: true }
         )
@@ -544,7 +544,7 @@ const PrivateAccount = ({ data, setData }) => {
     try {
       if (isFollowing) {
         // Unfollow karo
-        const res = await axios.patch(
+        const res = await axiosInstance.patch(
           import.meta.env.VITE_DOMAIN + `/api/follow-requests/unfollow/${userId}`,
           {},
           { withCredentials: true }
@@ -555,7 +555,7 @@ const PrivateAccount = ({ data, setData }) => {
         toast.success("Unfollowed successfully")
       } else if (isReqSent) {
         // Request cancel karo
-        await axios.delete(
+        await axiosInstance.delete(
           import.meta.env.VITE_DOMAIN + `/api/follow-requests/${userId}`,
           { withCredentials: true }
         )
@@ -564,7 +564,7 @@ const PrivateAccount = ({ data, setData }) => {
         toast.success("Request cancelled")
       } else {
         // Follow request bhejo
-        await axios.post(
+        await axiosInstance.post(
           import.meta.env.VITE_DOMAIN + `/api/follow-requests/${userId}`,
           {},
           { withCredentials: true }

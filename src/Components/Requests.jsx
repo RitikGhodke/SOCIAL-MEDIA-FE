@@ -118,7 +118,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import axios from 'axios'
+import axiosInstance from "../Utils/axiosInstance"
 
 const Requests = () => {
   const [requests, setRequests] = useState([]) // ✅ [] se shuru karo, undefined nahi
@@ -127,7 +127,7 @@ const Requests = () => {
   useEffect(() => {
     async function getData() {
       try {
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           import.meta.env.VITE_DOMAIN + `/api/follow-requests`,
           { withCredentials: true }
         )
@@ -141,7 +141,7 @@ const Requests = () => {
 
   const handleReview = async (itemId, status) => {
     try {
-      await axios.post( // ✅ Backend mein POST hai, PATCH nahi!
+      await axiosInstance.post( // ✅ Backend mein POST hai, PATCH nahi!
         import.meta.env.VITE_DOMAIN + `/api/follow-request/review/${itemId}/${status}`,
         {},
         { withCredentials: true }

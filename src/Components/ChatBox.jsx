@@ -3,7 +3,7 @@ import { io } from "socket.io-client"
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
+import axiosInstance from "../Utils/axiosInstance"
 import { useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 
@@ -20,7 +20,7 @@ const ChatBox = () => {
     useEffect(() => {
         async function getChats()
         {
-            const res = await axios.get(import.meta.env.VITE_DOMAIN + `/api/chats/${id}`, {withCredentials : true})
+            const res = await axiosInstance.get(import.meta.env.VITE_DOMAIN + `/api/chats/${id}`, {withCredentials : true})
             console.log(res)
             setChats(res.data.chats)
         }
@@ -44,7 +44,7 @@ const ChatBox = () => {
 
     useEffect(() => {
         async function getProfile() {
-            const res = await axios.get(import.meta.env.VITE_DOMAIN + `/api/profile/${id}`, { withCredentials: true })
+            const res = await axiosInstance.get(import.meta.env.VITE_DOMAIN + `/api/profile/${id}`, { withCredentials: true })
             setUserData(res.data.data)
         }
         getProfile()

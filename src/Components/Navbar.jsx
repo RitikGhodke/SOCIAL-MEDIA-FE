@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axiosInstance from "../Utils/axiosInstance"
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -22,7 +22,7 @@ const Navbar = () => {
     const intervalId = setTimeout(() => {
       async function getData()
       {
-        const res = await axios.get(import.meta.env.VITE_DOMAIN + `/api/follow-requests/search?q=${q}`, {withCredentials  : true})
+        const res = await axiosInstance.get(import.meta.env.VITE_DOMAIN + `/api/follow-requests/search?q=${q}`, {withCredentials  : true})
         // console.log(res)
         setSuggestions(res.data.data)
       }

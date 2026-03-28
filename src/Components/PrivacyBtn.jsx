@@ -60,7 +60,7 @@
 
 
 
-import axios from "axios";
+import axiosInstance from "../Utils/axiosInstance";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserData } from "../Utils/UserSlice";
@@ -80,7 +80,7 @@ const ToggleSwitch = ({ label }) => {
 
   async function toggleAccount() {
     try {
-      const res = await axios.patch(
+      const res = await axiosInstance.patch(
         `${import.meta.env.VITE_DOMAIN}/api/profile/${userData._id}/privacy`,
         { isPrivate: !isPrivate },
         { withCredentials: true }

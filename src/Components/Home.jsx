@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import axios from 'axios'
+import axiosInstance from "../Utils/axiosInstance"
 import Feed from './PostCards'
 
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     async function getData()
     {
-      const res = await axios.get(import.meta.env.VITE_DOMAIN +  `/api/posts/feed`, {withCredentials : true})
+      const res = await axiosInstance.get(import.meta.env.VITE_DOMAIN +  `/api/posts/feed`, {withCredentials : true})
       // console.log(res)
       setPosts(res.data.data)
     }

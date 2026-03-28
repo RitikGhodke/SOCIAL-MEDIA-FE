@@ -141,7 +141,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate, Outlet } from "react-router-dom"
 import Loader from "./Loader"
-import axios from "axios"
+import axiosInstance from "../Utils/axiosInstance"
 import { addUserData } from "../Utils/UserSlice"
 
 const ProtectedRoutes = () => {
@@ -155,7 +155,7 @@ const ProtectedRoutes = () => {
       try {
         console.log("🔍 Fetching user...")
 
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           `${import.meta.env.VITE_DOMAIN}/api/auth/get-user-data`, // ✅ FIXED URL
           { withCredentials: true }
         )

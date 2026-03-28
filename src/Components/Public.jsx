@@ -485,7 +485,7 @@
 
 
 
-import axios from "axios"
+import axiosInstance from "../Utils/axiosInstance"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
@@ -523,7 +523,7 @@ const Public = ({ data }) => {
     try {
       if (isFollowing) {
         // ✅ UNFOLLOW (correct route)
-        const res = await axios.patch(
+        const res = await axiosInstance.patch(
           `${import.meta.env.VITE_DOMAIN}/api/follow-requests/unfollow/${userId}`,
           {},
           { withCredentials: true }
@@ -535,7 +535,7 @@ const Public = ({ data }) => {
 
       } else {
         // ✅ FOLLOW (FIXED HERE 🔥)
-        const res = await axios.post(
+        const res = await axiosInstance.post(
           `${import.meta.env.VITE_DOMAIN}/api/follow-request/${userId}`,  // ✅ FIXED LINE
           {},
           { withCredentials: true }

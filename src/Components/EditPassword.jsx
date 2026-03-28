@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../Utils/axiosInstance"
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ const EditPassword = () => {
     }
     async function change() {
         try {
-        const res = await axios.patch(import.meta.env.VITE_DOMAIN + "/api/auth/change-password", {oldPassword, newPassword}, {withCredentials : true})
+        const res = await axiosInstance.patch(import.meta.env.VITE_DOMAIN + "/api/auth/change-password", {oldPassword, newPassword}, {withCredentials : true})
         toast.success("Password Changed Successfully")
         nav("/profile")
         } catch (error) {

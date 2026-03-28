@@ -568,7 +568,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../Utils/axiosInstance";
 import { addUserData } from "../Utils/UserSlice";
 import imageCompression from "browser-image-compression";
 
@@ -615,7 +615,7 @@ const Profile = () => {
       // convert to base64
       const base64pic = await fileToBase64(compressedFile);
 
-      const res = await axios.patch(
+      const res = await axiosInstance.patch(
         `${import.meta.env.VITE_DOMAIN}/api/profile/${userData?._id}/profile-picture`,
         { profilePicture: base64pic },
         { withCredentials: true }

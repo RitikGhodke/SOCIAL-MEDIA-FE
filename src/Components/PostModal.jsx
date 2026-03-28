@@ -1,4 +1,4 @@
-import axios from "axios"
+import axiosInstance from "../Utils/axiosInstance"
 import { X, Heart, MessageCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -32,7 +32,7 @@ const PostModal = ({ setUseModal, post }) => {
   const handleAddComment = async () => {
     if (!comment.trim()) return
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         `${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}`,
         { text: comment },
         { withCredentials: true }
@@ -69,7 +69,7 @@ const PostModal = ({ setUseModal, post }) => {
 
     try {
       if (isCurrentlyLiked) {
-        const res = await axios.patch(
+        const res = await axiosInstance.patch(
           `${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}/${commentId}/unlike`,
           {},
           { withCredentials: true }
@@ -82,7 +82,7 @@ const PostModal = ({ setUseModal, post }) => {
           )
         )
       } else {
-        const res = await axios.post(
+        const res = await axiosInstance.post(
           `${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}/${commentId}/like`,
           {},
           { withCredentials: true }
