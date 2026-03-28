@@ -33,7 +33,7 @@ const Login = () => {
     async function login()
     {
         try {
-            const res = await axios.post("http://localhost:8888/api/auth/signin", {[isMail ? "mail" : "username"] : username, password}, {withCredentials  : true})
+            const res = await axios.post("https://social-networking-4-negk.onrender.com/api/auth/signin", {[isMail ? "mail" : "username"] : username, password}, {withCredentials  : true})
             // console.log(res.data.data)
             dispatch(addUserData(res.data.data))
             nav("/home")
