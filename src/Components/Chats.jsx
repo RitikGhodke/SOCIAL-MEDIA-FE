@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import axiosInstance from "../Utils/axiosInstance"
+import axios from 'axios'
 import ConvCard from './ConvCard'
 
 const Chats = () => {
@@ -11,8 +11,7 @@ const Chats = () => {
   useEffect(() => {
     async function getConversations() {
       try {
-        const res = await axiosInstance.get(
-            `/api/chats`,
+        const res = await axios.get(import.meta.env.VITE_DOMAIN +`/api/chats`,
           { withCredentials: true }
         )
         setConv(res.data.data)

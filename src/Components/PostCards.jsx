@@ -231,7 +231,7 @@
 import { useState } from "react"
 import { Heart, MessageCircle, Send, Bookmark } from "lucide-react"
 import PostModal from "./PostModal"
-import axiosInstance from "../Utils/axiosInstance"
+import axios from "axios"
 const Feed = ({ posts }) => {
   return (
     <div className="max-w-xl mx-auto mt-6 space-y-6 ">
@@ -264,7 +264,7 @@ const PostCard = ({ post }) => {
 
     async function like()
     {
-      const likeRes = axiosInstance.patch( `/api/posts/${post._id}/like`, {}, {withCredentials : true})
+      const likeRes = axios.patch(import.meta.env.VITE_DOMAIN +  `/api/posts/${post._id}/like`, {}, {withCredentials : true})
       console.log(likeRes)
       setLiked(prev => !prev)
       setLikesCount((prev) => (prev + 1))
@@ -272,7 +272,7 @@ const PostCard = ({ post }) => {
     }
 
     async function unlike() {
-      const unlikeRes = axiosInstance.patch( `/api/posts/${post._id}/unlike`, {}, {withCredentials : true})
+      const unlikeRes = axios.patch( import.meta.env.VITE_DOMAIN + `/api/posts/${post._id}/unlike`, {}, {withCredentials : true})
       console.log(unlikeRes)
       setLiked(prev => !prev)
       setLikesCount((prev) => (prev - 1))
@@ -297,13 +297,13 @@ const PostCard = ({ post }) => {
     // TODO: API call to toggle comment like
     async function likeComment()
     {
-      const res = await axiosInstance.post( `/api/comments/${post._id}/${commentId}/like`, {}, {withCredentials : true})
+      const res = await axios.post(import.meta.env.VITE_DOMAIN +  `/api/comments/${post._id}/${commentId}/like`, {}, {withCredentials : true})
       console.log(res)
     }
 
     async function unlikeComment()
     {
-      const res = await axiosInstance.patch( `/api/comments/${post._id}/${commentId}/unlike`, {}, {withCredentials : true})
+      const res = await axios.patch(import.meta.env.VITE_DOMAIN +  `/api/comments/${post._id}/${commentId}/unlike`, {}, {withCredentials : true})
       console.log(res)
     }
 

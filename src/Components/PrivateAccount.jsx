@@ -489,32 +489,216 @@
 
 
 
-import axiosInstance from "../Utils/axiosInstance"
+// import axios from 'axios'
+// import React, { useEffect, useState } from 'react'
+// import { useSelector } from 'react-redux'
+// import { useNavigate, useParams } from 'react-router-dom'
+// import toast from 'react-hot-toast'
+
+// const PrivateAccount = ({ data, setData }) => {
+//   // ✅ Guard - agar data nahi hai to kuch mat dikhao
+//   if (!data || !data.firstName) return null
+
+//   const { userId } = useParams()
+//   const userSliceData = useSelector(store => store.user)
+//   const nav = useNavigate()
+  
+//   // ✅ Check - already following hai kya?
+//   const isAlreadyFollowing = userSliceData.following.some(item => item == userId)
+  
+//   const [isFollowing, setIsFollowing] = useState(isAlreadyFollowing)
+//   const [isReqSent, setIsReqSent] = useState(false)
+
+//   // ✅ Check karo - request already sent hai kya?
+//   useEffect(() => {
+//     async function checkReqStatus() {
+//       try {
+//         const res = await axios.get(import.meta.env.VITE_DOMAIN + `/api/follow-requests/check/${userId}`,
+//           { withCredentials: true }
+//         )
+//         setIsReqSent(res.data.flag)
+//       } catch (error) {
+//         console.log("Check request error:", error)
+//       }
+//     }
+
+//     if (!isFollowing) {
+//       checkReqStatus()
+//     }
+//   }, [userId, isFollowing])
+
+//   const {
+//     profilePicture,
+//     firstName,
+//     lastName,
+//     username,
+//     bio,
+//     posts,
+//     followers,
+//     following,
+//   } = data
+
+//   // ✅ Follow/Unfollow/Cancel handler
+//   async function followBtnHandler() {
+//     try {
+//       if (isFollowing) {
+//         // Unfollow karo
+//         const res = await axios.patch(import.meta.env.VITE_DOMAIN + `/api/follow-requests/unfollow/${userId}`,
+//           {},
+//           { withCredentials: true }
+//         )
+        
+//         if (setData) setData(res.data.toUserData)
+//         setIsFollowing(false)
+//         toast.success("Unfollowed successfully")
+//       } else if (isReqSent) {
+//         // Request cancel karo
+//         await axios.delete(import.meta.env.VITE_DOMAIN +  `/api/follow-requests/${userId}`,
+//           { withCredentials: true }
+//         )
+        
+//         setIsReqSent(false)
+//         toast.success("Request cancelled")
+//       } else {
+//         // Follow request bhejo
+//         await axios.post(import.meta.env.VITE_DOMAIN +`/api/follow-requests/${userId}`,
+//           {},
+//           { withCredentials: true }
+//         )
+        
+//         setIsReqSent(true)
+//         toast.success("Follow request sent!")
+//       }
+//     } catch (error) {
+//       console.log("Follow action error:", error.response?.data)
+//       toast.error(error.response?.data?.error || "Action failed")
+//     }
+//   }
+
+//   // ✅ Button text decide karo
+//   const getButtonText = () => {
+//     if (isFollowing) return "Following"
+//     if (isReqSent) return "Requested"
+//     return "Follow"
+//   }
+
+//   const getButtonStyle = () => {
+//     if (isFollowing) {
+//       return "bg-gray-200 text-gray-700 hover:bg-gray-300"
+//     }
+//     if (isReqSent) {
+//       return "bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
+//     }
+//     return "bg-pink-500 text-white hover:bg-pink-600"
+//   }
+
+//   return (
+//     <div className="max-w-5xl mx-auto px-4 py-10">
+//       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+//         {/* Profile Picture */}
+//         <img
+//           src={
+//             profilePicture ||
+//             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+//           }
+//           alt={`${firstName} ${lastName}`}
+//           className="w-32 h-32 rounded-full object-cover border-4 border-pink-200 shadow-md"
+//         />
+
+//         <div className="flex-1">
+//           {/* Name & Buttons */}
+//           <div className="flex items-center gap-4">
+//             <p className="text-2xl font-bold text-gray-800">
+//               {firstName} {lastName}{" "}
+//               <span className="text-gray-500 text-lg font-normal">
+//                 @{username}
+//               </span>
+//             </p>
+
+//             {/* Follow/Unfollow/Requested Button */}
+//             <button
+//               onClick={followBtnHandler}
+//               className={`px-4 py-1 rounded-lg text-sm font-medium transition ${getButtonStyle()}`}
+//             >
+//               {getButtonText()}
+//             </button>
+
+//             {/* Message Button */}
+//             <button 
+//               onClick={() => nav("/chat/" + userId)}
+//               className="px-4 py-1 rounded-lg text-sm font-medium transition bg-gray-200 text-gray-700 hover:bg-gray-300"
+//             >
+//               Message
+//             </button>
+//           </div>
+
+//           {/* Stats */}
+//           <div className="flex gap-6 mt-3 text-gray-700">
+//             <p>
+//               <span className="font-semibold">{posts?.length ?? 0}</span> Posts
+//             </p>
+//             <p>
+//               <span className="font-semibold">{followers?.length ?? 0}</span> Followers
+//             </p>
+//             <p>
+//               <span className="font-semibold">{following?.length ?? 0}</span> Following
+//             </p>
+//           </div>
+
+//           {/* Bio */}
+//           <p className="mt-4 text-gray-700 leading-relaxed">
+//             {bio || "No bio available"}
+//           </p>
+
+//           {/* 🔒 Private Account Message */}
+//           <div className="mt-10 text-center text-gray-400 border-t pt-10">
+//             <p className="text-4xl">🔒</p>
+//             <p className="mt-2 font-semibold text-gray-600">
+//               This account is private
+//             </p>
+//             <p className="text-sm">
+//               Follow this account to see their posts
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default PrivateAccount
+
+
+
+
+
+
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 const PrivateAccount = ({ data, setData }) => {
-  // ✅ Guard - agar data nahi hai to kuch mat dikhao
   if (!data || !data.firstName) return null
 
   const { userId } = useParams()
   const userSliceData = useSelector(store => store.user)
   const nav = useNavigate()
-  
-  // ✅ Check - already following hai kya?
-  const isAlreadyFollowing = userSliceData.following.some(item => item == userId)
-  
+
+  const isAlreadyFollowing = userSliceData.following.some(
+    item => item == userId
+  )
+
   const [isFollowing, setIsFollowing] = useState(isAlreadyFollowing)
   const [isReqSent, setIsReqSent] = useState(false)
 
-  // ✅ Check karo - request already sent hai kya?
+  // ✅ Check request already sent or not
   useEffect(() => {
     async function checkReqStatus() {
       try {
-        const res = await axiosInstance.get(
-           `/api/follow-requests/check/${userId}`,
+        const res = await axios.get(
+          import.meta.env.VITE_DOMAIN + `/api/follow-requests/check/${userId}`,
           { withCredentials: true }
         )
         setIsReqSent(res.data.flag)
@@ -539,47 +723,45 @@ const PrivateAccount = ({ data, setData }) => {
     following,
   } = data
 
-  // ✅ Follow/Unfollow/Cancel handler
+  // ✅ MAIN FIXED HANDLER
   async function followBtnHandler() {
     try {
       if (isFollowing) {
-        // Unfollow karo
-        const res = await axiosInstance.patch(
-           `/api/follow-requests/unfollow/${userId}`,
+        // 🔥 UNFOLLOW
+        const res = await axios.patch(
+          import.meta.env.VITE_DOMAIN + `/api/follow-requests/unfollow/${userId}`,
           {},
           { withCredentials: true }
         )
-        
-        if (setData) setData(res.data.toUserData)
+
         setIsFollowing(false)
-        toast.success("Unfollowed successfully")
-      } else if (isReqSent) {
-        // Request cancel karo
-        await axiosInstance.delete(
-           `/api/follow-requests/${userId}`,
-          { withCredentials: true }
-        )
-        
         setIsReqSent(false)
-        toast.success("Request cancelled")
+        if (setData) setData(res.data.toUserData)
+
+        toast.success("Unfollowed successfully")
+
+      } else if (isReqSent) {
+        // ❌ CANCEL REQUEST (skip for now if no backend route)
+        toast.error("Cancel request API not implemented")
+
       } else {
-        // Follow request bhejo
-        await axiosInstance.post(
-           `/api/follow-requests/${userId}`,
+        // 🔥 SEND FOLLOW REQUEST (IMPORTANT FIX)
+        await axios.post(
+          import.meta.env.VITE_DOMAIN + `/api/follow-request/${userId}`, // ✅ FIXED ROUTE
           {},
           { withCredentials: true }
         )
-        
+
         setIsReqSent(true)
         toast.success("Follow request sent!")
       }
+
     } catch (error) {
       console.log("Follow action error:", error.response?.data)
       toast.error(error.response?.data?.error || "Action failed")
     }
   }
 
-  // ✅ Button text decide karo
   const getButtonText = () => {
     if (isFollowing) return "Following"
     if (isReqSent) return "Requested"
@@ -587,83 +769,61 @@ const PrivateAccount = ({ data, setData }) => {
   }
 
   const getButtonStyle = () => {
-    if (isFollowing) {
-      return "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }
-    if (isReqSent) {
-      return "bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
-    }
-    return "bg-pink-500 text-white hover:bg-pink-600"
+    if (isFollowing) return "bg-gray-200 text-gray-700"
+    if (isReqSent) return "bg-yellow-200 text-yellow-700"
+    return "bg-pink-500 text-white"
   }
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        {/* Profile Picture */}
+
         <img
           src={
             profilePicture ||
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           }
-          alt={`${firstName} ${lastName}`}
-          className="w-32 h-32 rounded-full object-cover border-4 border-pink-200 shadow-md"
+          className="w-32 h-32 rounded-full"
         />
 
         <div className="flex-1">
-          {/* Name & Buttons */}
+
           <div className="flex items-center gap-4">
-            <p className="text-2xl font-bold text-gray-800">
-              {firstName} {lastName}{" "}
-              <span className="text-gray-500 text-lg font-normal">
+            <p className="text-2xl font-bold">
+              {firstName} {lastName}
+              <span className="text-gray-500 text-lg ml-2">
                 @{username}
               </span>
             </p>
 
-            {/* Follow/Unfollow/Requested Button */}
             <button
               onClick={followBtnHandler}
-              className={`px-4 py-1 rounded-lg text-sm font-medium transition ${getButtonStyle()}`}
+              className={`px-4 py-1 rounded ${getButtonStyle()}`}
             >
               {getButtonText()}
             </button>
 
-            {/* Message Button */}
-            <button 
+            <button
               onClick={() => nav("/chat/" + userId)}
-              className="px-4 py-1 rounded-lg text-sm font-medium transition bg-gray-200 text-gray-700 hover:bg-gray-300"
+              className="px-4 py-1 bg-gray-200 rounded"
             >
               Message
             </button>
           </div>
 
-          {/* Stats */}
-          <div className="flex gap-6 mt-3 text-gray-700">
-            <p>
-              <span className="font-semibold">{posts?.length ?? 0}</span> Posts
-            </p>
-            <p>
-              <span className="font-semibold">{followers?.length ?? 0}</span> Followers
-            </p>
-            <p>
-              <span className="font-semibold">{following?.length ?? 0}</span> Following
-            </p>
+          <div className="flex gap-6 mt-3">
+            <p>{posts?.length || 0} Posts</p>
+            <p>{followers?.length || 0} Followers</p>
+            <p>{following?.length || 0} Following</p>
           </div>
 
-          {/* Bio */}
-          <p className="mt-4 text-gray-700 leading-relaxed">
-            {bio || "No bio available"}
-          </p>
+          <p className="mt-4">{bio || "No bio"}</p>
 
-          {/* 🔒 Private Account Message */}
-          <div className="mt-10 text-center text-gray-400 border-t pt-10">
+          <div className="mt-10 text-center text-gray-400">
             <p className="text-4xl">🔒</p>
-            <p className="mt-2 font-semibold text-gray-600">
-              This account is private
-            </p>
-            <p className="text-sm">
-              Follow this account to see their posts
-            </p>
+            <p>This account is private</p>
           </div>
+
         </div>
       </div>
     </div>
@@ -671,3 +831,13 @@ const PrivateAccount = ({ data, setData }) => {
 }
 
 export default PrivateAccount
+
+
+
+
+
+
+
+
+
+

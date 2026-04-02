@@ -349,7 +349,7 @@
 
 import React, { useContext, useRef, useState } from 'react'
 import { uiContext } from '../App'
-import axiosInstance from "../Utils/axiosInstance"
+import axios from 'axios'
 import toast from 'react-hot-toast'
 import "../otp.css"
 import { useNavigate } from 'react-router-dom'
@@ -374,7 +374,7 @@ const Email = () => {
     async function sendOtp()
     {
       try {
-        const res = await axiosInstance.post( "/api/otp/send-otp", {email})
+        const res = await axios.post(import.meta.env.VITE_DOMAIN + "/api/otp/send-otp", {email})
         // console.log(res)
         setUi(1)
       } catch (error) {
@@ -464,7 +464,7 @@ const VerifyOtp = () => {
 
     async function verify() {
       try {
-        const res = await axiosInstance.post( "/api/otp/verify-otp", {otp : enteredOtp, email})
+        const res = await axios.post(import.meta.env.VITE_DOMAIN + "/api/otp/verify-otp", {otp : enteredOtp, email})
         // console.log(res)
         setUi(2)
       } catch (error) {
@@ -526,8 +526,7 @@ const SignupForm = () => {
     e.preventDefault();
     try {
       // 🔥 Replace with your backend endpoint
-      const res = await axiosInstance.post(
-        "/api/auth/signup",
+      const res = await axios.post(import.meta.env.VITE_DOMAIN +"/api/auth/signup",
         formData
       );
       console.log(res.data);

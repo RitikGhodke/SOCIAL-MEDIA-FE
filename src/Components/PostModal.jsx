@@ -1,4 +1,4 @@
-import axiosInstance from "../Utils/axiosInstance"
+import axios from "axios"
 import { X, Heart, MessageCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -32,8 +32,7 @@ const PostModal = ({ setUseModal, post }) => {
   const handleAddComment = async () => {
     if (!comment.trim()) return
     try {
-      const res = await axiosInstance.post(
-        `/api/comments/${post._id}`,
+      const res = await axios.post(`${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}`,
         { text: comment },
         { withCredentials: true }
       )
@@ -69,8 +68,7 @@ const PostModal = ({ setUseModal, post }) => {
 
     try {
       if (isCurrentlyLiked) {
-        const res = await axiosInstance.patch(
-          `/api/comments/${post._id}/${commentId}/unlike`,
+        const res = await axios.patch(`${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}/${commentId}/unlike`,
           {},
           { withCredentials: true }
         )
@@ -82,8 +80,7 @@ const PostModal = ({ setUseModal, post }) => {
           )
         )
       } else {
-        const res = await axiosInstance.post(
-          `/api/comments/${post._id}/${commentId}/like`,
+        const res = await axios.post(`${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}/${commentId}/like`,
           {},
           { withCredentials: true }
         )
@@ -237,7 +234,7 @@ const PostModal = ({ setUseModal, post }) => {
                           <button onClick={() => {
                             async function replyCOmment()
                             {
-                                const res = await axiosInstance.post( `/api/comments/${post._id}/${item._id}/reply`, {text : replyText}, {withCredentials : true})
+                                const res = await axios.post( `${import.meta.env.VITE_DOMAIN}/api/comments/${post._id}/${item._id}/reply`, {text : replyText}, {withCredentials : true})
                                 console.log(res)
                                 setReplyText("")
                                 const newCOmmentsArray = allComments.map((i) => {

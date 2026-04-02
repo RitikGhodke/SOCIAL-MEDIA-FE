@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
-import axiosInstance from "../Utils/axiosInstance";
+import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addUserData } from "../Utils/UserSlice";
@@ -33,9 +33,9 @@ const Login = () => {
     async function login()
     {
         try {
-            const res = await axiosInstance.post("/api/auth/signin", {[isMail ? "mail" : "username"] : username, password}, {withCredentials  : true})
+            const res = await axios.post(import.meta.env.VITE_DOMAIN + "/api/auth/signin", {[isMail ? "mail" : "username"] : username, password}, {withCredentials  : true})
             // console.log(res.data.data)
-            localStorage.setItem("token", res.data.token);
+            
             
             dispatch(addUserData(res.data.data))
             nav("/home")

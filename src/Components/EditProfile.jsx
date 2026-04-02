@@ -122,7 +122,7 @@
 
 
 
-import axiosInstance from "../Utils/axiosInstance"
+import axios from "axios"
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -162,8 +162,7 @@ const EditProfile = () => {
 
     async function saveData() {
       try {
-        const res = await axiosInstance.patch(
-           `/api/profile/${userData._id}`,
+        const res = await axios.patch(import.meta.env.VITE_DOMAIN + `/api/profile/${userData._id}`,
           { firstName, lastName, bio },
           { withCredentials: true }
         )

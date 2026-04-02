@@ -356,7 +356,7 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import axiosInstance from "../Utils/axiosInstance";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addPost } from "../Utils/UserSlice";
@@ -392,7 +392,7 @@ const NewPost = () => {
           const base64Media = await Promise.all(media.map((item) => {
             return fileToBase64(item.item)
           }))
-          const res = await axiosInstance.post( "/api/posts/create", {caption : temp, location : "Delhi", media : base64Media}, {withCredentials : true})
+          const res = await axios.post( import.meta.env.VITE_DOMAIN + "/api/posts/create", {caption : temp, location : "Delhi", media : base64Media}, {withCredentials : true})
           if(res.status == 201)
           {
             dispatch(addPost(res.data.data))

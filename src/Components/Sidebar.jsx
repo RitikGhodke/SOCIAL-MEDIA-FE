@@ -1,4 +1,4 @@
-import axiosInstance from "../Utils/axiosInstance"
+import axios from "axios"
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
@@ -12,8 +12,7 @@ const Sidebar = () => {
 
   function logout() {
     async function logOut() {
-      await axiosInstance.post(
-         "/api/auth/logout",
+      await axios.post( import.meta.env.VITE_DOMAIN + "/api/auth/logout",
         {},
         { withCredentials: true }
       )

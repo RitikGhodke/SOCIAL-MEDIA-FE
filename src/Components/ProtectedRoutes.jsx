@@ -137,31 +137,84 @@
 
 
 
+// import { useEffect, useState } from "react"
+// import { useDispatch, useSelector } from "react-redux"
+// import { Navigate, Outlet } from "react-router-dom"
+// import Loader from "./Loader"
+// import axios from "axios"
+// import { addUserData } from "../Utils/UserSlice"
+
+// const ProtectedRoutes = () => {
+//   const user = useSelector((store) => store.user)
+//   const dispatch = useDispatch()
+
+//   const [loading, setLoading] = useState(true)
+
+//   useEffect(() => {
+//     async function fetchUser() {
+//       try {
+//         console.log("🔍 Fetching user...")
+
+//         const res = await axios.get(`${import.meta.env.VITE_DOMAIN}/api/auth/get-user-data`, // ✅ FIXED URL
+//           { withCredentials: true }
+//         )
+
+//         console.log("✅ User:", res.data.data)
+
+//         dispatch(addUserData(res.data.data))
+//       } catch (error) {
+//         console.log("❌ Not logged in")
+//       } finally {
+//         setLoading(false)
+//       }
+//     }
+
+//     // ✅ Agar Redux me user nahi hai tabhi API call karo
+//     if (!user || !user._id) {
+//       fetchUser()
+//     } else {
+//       setLoading(false)
+//     }
+//   }, [dispatch, user])
+
+//   // ✅ Loader dikhao jab tak check ho raha hai
+//   if (loading) {
+//     return <Loader />
+//   }
+
+//   // ❌ Agar login nahi hai → redirect
+//   if (!user || !user._id) {
+//     return <Navigate to="/login" replace />
+//   }
+
+//   // ✅ Agar login hai → page dikhao
+//   return <Outlet />
+// }
+
+// export default ProtectedRoutes
+
+
+
+
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate, Outlet } from "react-router-dom"
 import Loader from "./Loader"
-import axiosInstance from "../Utils/axiosInstance"
+import axios from "axios"
 import { addUserData } from "../Utils/UserSlice"
 
 const ProtectedRoutes = () => {
   const user = useSelector((store) => store.user)
   const dispatch = useDispatch()
-
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchUser() {
       try {
-        console.log("🔍 Fetching user...")
-
-        const res = await axiosInstance.get(
-          `/api/auth/get-user-data`, // ✅ FIXED URL
+        const res = await axios.get(
+          `${import.meta.env.VITE_DOMAIN}/api/auth/get-user-data`,
           { withCredentials: true }
         )
-
-        console.log("✅ User:", res.data.data)
-
         dispatch(addUserData(res.data.data))
       } catch (error) {
         console.log("❌ Not logged in")
@@ -170,25 +223,17 @@ const ProtectedRoutes = () => {
       }
     }
 
-    // ✅ Agar Redux me user nahi hai tabhi API call karo
-    if (!user || !user._id) {
-      fetchUser()
-    } else {
-      setLoading(false)
-    }
-  }, [dispatch, user])
+    fetchUser()
+  }, [dispatch])
 
-  // ✅ Loader dikhao jab tak check ho raha hai
   if (loading) {
     return <Loader />
   }
 
-  // ❌ Agar login nahi hai → redirect
   if (!user || !user._id) {
     return <Navigate to="/login" replace />
   }
 
-  // ✅ Agar login hai → page dikhao
   return <Outlet />
 }
 

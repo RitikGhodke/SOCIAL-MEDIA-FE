@@ -172,7 +172,7 @@ import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import PrivateAccount from './PrivateAccount'
 import Public from './Public'
-import axiosInstance from "../Utils/axiosInstance"
+import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
@@ -187,8 +187,7 @@ const ViewProfile = () => {
       try {
         setLoading(true)
         
-        const res = await axiosInstance.get(
-          `/api/profile/${userId}`,
+        const res = await axios.get( import.meta.env.VITE_DOMAIN +  `/api/profile/${userId}`,
           { withCredentials: true }
         )
         
@@ -196,6 +195,8 @@ const ViewProfile = () => {
         
         setIsPrivate(res.data.data.isPrivate)
         setUserData(res.data.data)
+
+        
       } catch (error) {
         console.error("❌ Profile fetch error:", error.response?.data)
         toast.error(error.response?.data?.error || "Failed to load profile")
@@ -263,3 +264,12 @@ const ViewProfile = () => {
 }
 
 export default ViewProfile
+
+
+
+
+
+
+
+
+
