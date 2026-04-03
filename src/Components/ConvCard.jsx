@@ -61,6 +61,7 @@ const ConvCard = ({ data, myId }) => {
     const nav = useNavigate()
 
     // ✅ Unread count
+    // const unreadCount = data.unreadCount?.[myData._id] || 0
     const unreadCount = data.unreadCount?.[myData._id] || 0
 
     return (

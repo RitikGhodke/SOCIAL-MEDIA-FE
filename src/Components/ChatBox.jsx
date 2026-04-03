@@ -719,10 +719,15 @@ const ChatBox = () => {
         socket.current = io(import.meta.env.VITE_DOMAIN)
         socket.current.emit("join-room", { sender: myUserData._id, receiver: id })
 
+        // socket.current.on("receive-msg", (msg) => {
+        //     setChats(prev => [...prev, msg])
+        //     setIsTyping(false)
+        // })
+        
         socket.current.on("receive-msg", (msg) => {
-            setChats(prev => [...prev, msg])
-            setIsTyping(false)
-        })
+        setChats(prev => [...prev, msg])
+    })
+
 
         socket.current.on("typing", () => {
             setIsTyping(true)
@@ -760,34 +765,59 @@ const ChatBox = () => {
     }
 
     function btnClickHandler() {
-        if (text.trim().length === 0 && !imageBase64) return
+    // ❌ empty message check
+    if (text.trim().length === 0 && !imageBase64) return
 
-        const newMsg = {
-            _id: Date.now().toString(),
-            sender: myUserData._id,
-            receiver: id,
-            text,
-            image: imageBase64,
-            replyTo: replyingTo,
-            reactions: [],
-            createdAt: new Date().toISOString()
-        }
+    // ✅ ONLY socket emit (NO local add)
+    socket.current.emit("send-msg", {
+        sender: myUserData._id,
+        receiver: id,
+        text,
+        image: imageBase64,
+        replyTo: replyingTo?._id || null
+    })
 
-        socket.current.emit("send-msg", {
-            sender: myUserData._id,
-            receiver: id,
-            text,
-            image: imageBase64,
-            replyTo: replyingTo?._id || null
-        })
+    // ❌ ये पूरा delete कर दिया:
+    // const newMsg = { ... }
+    // setChats(prev => [...prev, newMsg])
 
-        setChats(prev => [...prev, newMsg])
-        setText("")
-        setSelectedImage(null)
-        setImageBase64("")
-        setReplyingTo(null)
-        setShowEmoji(false)
-    }
+    // ✅ reset input
+    setText("")
+    setSelectedImage(null)
+    setImageBase64("")
+    setReplyingTo(null)
+    setShowEmoji(false)
+}
+
+    // function btnClickHandler() {
+    //     if (text.trim().length === 0 && !imageBase64) return
+
+    //     const newMsg = {
+    //         _id: Date.now().toString(),
+    //         sender: myUserData._id,
+    //         receiver: id,
+    //         text,
+    //         image: imageBase64,
+    //         replyTo: replyingTo,
+    //         reactions: [],
+    //         createdAt: new Date().toISOString()
+    //     }
+
+    //     socket.current.emit("send-msg", {
+    //         sender: myUserData._id,
+    //         receiver: id,
+    //         text,
+    //         image: imageBase64,
+    //         replyTo: replyingTo?._id || null
+    //     })
+
+    //     setChats(prev => [...prev, newMsg])
+    //     setText("")
+    //     setSelectedImage(null)
+    //     setImageBase64("")
+    //     setReplyingTo(null)
+    //     setShowEmoji(false)
+    // }
 
     function handleKeyDown(e) {
         if (e.key === "Enter" && !selectedImage) btnClickHandler()
