@@ -150,9 +150,15 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 px-4">
       <div className="w-full max-w-md bg-white/80 backdrop-blur-lg p-6 sm:p-8 rounded-2xl shadow-2xl border border-white/40">
         
-        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">
+        {/* <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">
           Welcome Back 👋
-        </h2>
+        </h2> */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">
+  Welcome to{" "}
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
+    SocialApp
+  </span> 👋
+</h2>
         <p className="text-center text-sm text-gray-500 mb-6">
           Login to continue your journey
         </p>
