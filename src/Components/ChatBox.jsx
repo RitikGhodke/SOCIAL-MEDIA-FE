@@ -820,7 +820,7 @@ const ChatBox = () => {
     // ✅ Socket setup — production fix
     useEffect(() => {
         socket.current = io(import.meta.env.VITE_DOMAIN, {
-            transports: ["websocket", "polling"],  // ✅ production fix
+            transports: ["polling"],  // ✅ production fix
             withCredentials: true                   // ✅ production fix
         })
 
