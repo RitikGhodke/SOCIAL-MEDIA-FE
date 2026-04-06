@@ -1470,7 +1470,8 @@ const ChatBox = () => {
                 <div className="flex-1 flex flex-col h-full">
 
                     {/* ✅ Fix 2 & 3: relative add kiya taaki theme picker sahi jagah aaye */}
-                    <div className="relative flex-shrink-0 flex items-center px-4 py-3 bg-white border-b border-gray-200 shadow-sm">
+                    / BAAD MEIN:
+                <div className="relative flex-shrink-0 flex items-center px-4 py-3 bg-white border-b border-gray-200 shadow-sm">
                         <button onClick={() => nav("/chats")} className="md:hidden mr-3 text-gray-600 flex-shrink-0">
                             <ArrowLeft size={22} />
                         </button>
