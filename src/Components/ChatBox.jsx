@@ -820,9 +820,7 @@ const ChatBox = () => {
     }
 
     function handleLongPressStart(item) {
-        const timer = setTimeout(() => {
-            setShowReactions(item._id)
-        }, 500)
+        const timer = setTimeout(() => { setShowReactions(item._id) }, 500)
         setLongPressTimer(timer)
     }
 
@@ -847,33 +845,28 @@ const ChatBox = () => {
     }
 
     return (
-        /* 
-         * FIX 1 (Desktop + Mobile):
-         * h-screen + overflow-hidden on outer wrapper ensure full viewport usage.
-         * flex-col keeps Navbar on top, content below.
-        */
-        <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
-            <div className="hidden md:block flex-shrink-0"><Navbar /></div>
+        // fixed inset-0: poori screen lock — koi external layout interfere nahi kar sakta
+        // Navbar/Sidebar ka sticky/min-h-screen ChatBox pe asar nahi karega
+        <div className="fixed inset-0 flex flex-col bg-gray-100">
+
+            {/* Navbar — only desktop */}
+            <div className="hidden md:block flex-shrink-0">
+                <Navbar />
+            </div>
 
             <div className="flex flex-1 overflow-hidden min-h-0">
-                <div className="hidden md:block flex-shrink-0"><Sidebar /></div>
 
-                {/*
-                  * FIX 1 (cont.):
-                  * This column must be flex-col + min-h-0 so it respects parent height.
-                  * Without min-h-0, flex children can overflow the viewport.
-                */}
+                {/* Sidebar — only desktop */}
+                <div className="hidden md:block flex-shrink-0">
+                    <Sidebar />
+                </div>
+
+                {/* Chat column */}
                 <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
 
-                    {/*
-                      * FIX 1 — HEADER FIXED:
-                      * Removed "sticky" which caused layout shifts on mobile when keyboard opens.
-                      * Use flex-shrink-0 so header never collapses.
-                      * position: relative is kept for theme picker dropdown positioning.
-                    */}
-                    <div
-                        className="relative flex-shrink-0 flex items-center px-4 h-16 bg-white border-b border-gray-200 shadow-sm z-40"
-                    >
+                    {/* Chat Header — bilkul fixed, kabhi hilega nahi */}
+                    <div className="relative flex-shrink-0 flex items-center px-4 h-16 bg-white border-b border-gray-200 shadow-sm z-40">
+
                         <button onClick={() => nav("/chats")} className="md:hidden mr-3 text-gray-600 flex-shrink-0">
                             <ArrowLeft size={22} />
                         </button>
@@ -888,6 +881,7 @@ const ChatBox = () => {
                                         <img
                                             className="w-10 h-10 rounded-full object-cover ring-2 ring-pink-300"
                                             src={userData.profilePicture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                            alt="profile"
                                         />
                                         <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full ring-2 ring-white"></span>
                                     </div>
@@ -896,7 +890,7 @@ const ChatBox = () => {
                                             {userData.firstName} {userData.lastName}
                                         </p>
                                         <p className={`text-xs ${isTyping ? "text-green-500" : "text-gray-400"}`}>
-                                            {isTyping ? "typing..." : ""}
+                                            {isTyping ? "typing..." : "online"}
                                         </p>
                                     </div>
                                 </>
@@ -911,7 +905,6 @@ const ChatBox = () => {
                             )}
                         </div>
 
-                        {/* Theme button */}
                         <button
                             onClick={(e) => { e.stopPropagation(); setShowThemes(!showThemes) }}
                             className="flex-shrink-0 ml-2 text-gray-500 hover:text-pink-500 transition text-lg"
@@ -919,7 +912,6 @@ const ChatBox = () => {
                             🎨
                         </button>
 
-                        {/* Theme picker dropdown — positioned relative to header */}
                         {showThemes && (
                             <div className="absolute top-14 right-4 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 z-50 flex gap-2 flex-wrap max-w-[250px]">
                                 {THEMES.map(theme => (
@@ -935,12 +927,7 @@ const ChatBox = () => {
                         )}
                     </div>
 
-                    {/*
-                      * FIX 1 (cont.) — MESSAGES AREA:
-                      * flex-1 + min-h-0 + overflow-y-auto is the correct combo.
-                      * This makes the messages area fill remaining space and scroll independently.
-                      * On mobile, when keyboard opens, this area shrinks — header and input stay visible.
-                    */}
+                    {/* Messages — scrollable area */}
                     <div
                         className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-1"
                         style={{
@@ -968,40 +955,26 @@ const ChatBox = () => {
 
                                     <div
                                         className={`flex ${isSender ? "justify-end" : "justify-start"} mb-2 group relative`}
-                                        onTouchStart={(e) => {
-                                            handleTouchStart(e, item)
-                                            handleLongPressStart(item)
-                                        }}
-                                        onTouchMove={(e) => {
-                                            handleTouchMove(e, item)
-                                            handleLongPressEnd()
-                                        }}
-                                        onTouchEnd={(e) => {
-                                            handleTouchEnd(e, item)
-                                            handleLongPressEnd()
-                                        }}
+                                        onTouchStart={(e) => { handleTouchStart(e, item); handleLongPressStart(item) }}
+                                        onTouchMove={(e) => { handleTouchMove(e, item); handleLongPressEnd() }}
+                                        onTouchEnd={(e) => { handleTouchEnd(e, item); handleLongPressEnd() }}
                                         style={{
                                             transform: `translateX(${swipeOffset}px)`,
                                             transition: swipeOffset === 0 ? "transform 0.3s ease" : "none"
                                         }}
                                     >
-                                        {/* FIX 3 — Profile pic gap reduced: mr-3 → mr-1.5 */}
                                         {!isSender && (
                                             <img
                                                 src={userData?.profilePicture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                                 className="w-8 h-8 rounded-full object-cover mr-1.5 self-end flex-shrink-0"
+                                                alt="profile"
                                             />
                                         )}
 
                                         <div className="max-w-[70%] md:max-w-sm">
-                                            {/* Reply preview */}
                                             {item.replyTo && (
                                                 <div className={`text-xs px-3 py-1.5 rounded-xl mb-1 border-l-4 
-                                                    ${isSender
-                                                        ? "bg-purple-100 border-purple-400 text-purple-700"
-                                                        : "bg-gray-100 border-gray-400 text-gray-600"
-                                                    }`}
-                                                >
+                                                    ${isSender ? "bg-purple-100 border-purple-400 text-purple-700" : "bg-gray-100 border-gray-400 text-gray-600"}`}>
                                                     <p className="font-semibold mb-0.5">
                                                         {item.replyTo.sender?.toString() === myUserData._id?.toString() ? "You" : userData?.firstName}
                                                     </p>
@@ -1009,28 +982,24 @@ const ChatBox = () => {
                                                 </div>
                                             )}
 
-                                            {/* Image */}
                                             {item.image && (
                                                 <img
                                                     src={item.image}
                                                     className="rounded-2xl max-w-full max-h-60 object-cover shadow-md mb-1 cursor-pointer"
                                                     onClick={() => window.open(item.image, "_blank")}
+                                                    alt="sent"
                                                 />
                                             )}
 
-                                            {/* Text bubble */}
                                             {item.text && (
                                                 <div className={`px-4 py-2.5 rounded-2xl text-base break-words shadow-sm
                                                     ${isSender
                                                         ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-br-none"
-                                                        : "bg-white text-gray-800 rounded-bl-none"
-                                                    }`}
-                                                >
+                                                        : "bg-white text-gray-800 rounded-bl-none"}`}>
                                                     {item.text}
                                                 </div>
                                             )}
 
-                                            {/* Reactions display */}
                                             {item.reactions?.length > 0 && (
                                                 <div className={`flex flex-wrap gap-1 mt-1 ${isSender ? "justify-end" : "justify-start"}`}>
                                                     {Object.entries(
@@ -1051,15 +1020,10 @@ const ChatBox = () => {
                                             </p>
                                         </div>
 
-                                        {/* Desktop hover action buttons */}
                                         <div className="flex items-center gap-1 mx-2 opacity-0 group-hover:opacity-100 transition self-center relative">
-                                            <button
-                                                onClick={() => setReplyingTo(item)}
-                                                className="text-gray-400 hover:text-pink-500 transition"
-                                            >
+                                            <button onClick={() => setReplyingTo(item)} className="text-gray-400 hover:text-pink-500 transition">
                                                 <Reply size={16} />
                                             </button>
-
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation()
@@ -1070,18 +1034,13 @@ const ChatBox = () => {
                                                 😊
                                             </button>
 
-                                            {/* Desktop reaction popup */}
                                             {showReactions === (item._id || index) && (
                                                 <div
                                                     className="absolute bottom-8 left-0 bg-white rounded-full shadow-lg border border-gray-100 px-2 py-1 flex gap-1 z-50"
                                                     onClick={e => e.stopPropagation()}
                                                 >
                                                     {REACTIONS.map(emoji => (
-                                                        <button
-                                                            key={emoji}
-                                                            onClick={() => handleReact(item._id, emoji)}
-                                                            className="text-lg hover:scale-125 transition-transform"
-                                                        >
+                                                        <button key={emoji} onClick={() => handleReact(item._id, emoji)} className="text-lg hover:scale-125 transition-transform">
                                                             {emoji}
                                                         </button>
                                                     ))}
@@ -1089,34 +1048,28 @@ const ChatBox = () => {
                                             )}
                                         </div>
 
-                                        {/* Mobile long-press reaction popup */}
                                         {showReactions === item._id && (
                                             <div
                                                 className={`absolute ${isSender ? "right-10" : "left-10"} bottom-8 bg-white rounded-full shadow-lg border border-gray-100 px-2 py-1 flex gap-1 z-50 md:hidden`}
                                                 onClick={e => e.stopPropagation()}
                                             >
                                                 {REACTIONS.map(emoji => (
-                                                    <button
-                                                        key={emoji}
-                                                        onClick={() => handleReact(item._id, emoji)}
-                                                        className="text-lg"
-                                                    >
+                                                    <button key={emoji} onClick={() => handleReact(item._id, emoji)} className="text-lg">
                                                         {emoji}
                                                     </button>
                                                 ))}
                                             </div>
                                         )}
 
-                                        {/* FIX 3 — Profile pic gap reduced: ml-3 → ml-1.5 */}
                                         {isSender && (
                                             <img
                                                 src={myUserData?.profilePicture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                                 className="w-8 h-8 rounded-full object-cover ml-1.5 self-end flex-shrink-0"
+                                                alt="me"
                                             />
                                         )}
                                     </div>
 
-                                    {/* Swipe reply indicator */}
                                     {Math.abs(swipeOffset) > 30 && (
                                         <div className={`flex ${isSender ? "justify-end mr-10" : "justify-start ml-10"} -mt-1 mb-1`}>
                                             <span className="text-xs text-purple-500 font-medium">↩ Reply</span>
@@ -1126,12 +1079,12 @@ const ChatBox = () => {
                             )
                         })}
 
-                        {/* Typing indicator */}
                         {isTyping && (
                             <div className="flex justify-start mb-1">
                                 <img
                                     src={userData?.profilePicture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                     className="w-7 h-7 rounded-full object-cover mr-1.5 self-end"
+                                    alt="typing"
                                 />
                                 <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1 items-center">
                                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
@@ -1143,7 +1096,7 @@ const ChatBox = () => {
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Reply Preview bar */}
+                    {/* Reply Preview */}
                     {replyingTo && (
                         <div className="flex-shrink-0 px-4 py-2 bg-purple-50 border-t border-purple-200 flex items-center justify-between">
                             <div className="flex items-center gap-2">
@@ -1163,11 +1116,11 @@ const ChatBox = () => {
                         </div>
                     )}
 
-                    {/* Image preview bar */}
+                    {/* Image Preview */}
                     {selectedImage && (
                         <div className="flex-shrink-0 px-4 py-2 bg-white border-t border-gray-100">
                             <div className="relative inline-block">
-                                <img src={selectedImage} className="h-20 rounded-xl object-cover" />
+                                <img src={selectedImage} className="h-20 rounded-xl object-cover" alt="preview" />
                                 <button
                                     onClick={() => { setSelectedImage(null); setImageBase64("") }}
                                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5"
@@ -1189,37 +1142,18 @@ const ChatBox = () => {
                         </div>
                     )}
 
-                    {/*
-                      * FIX 2 — KEYBOARD EXTRA WINDOW HATAO:
-                      * autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
-                      * ye sab milke Android/iOS keyboard ki smart suggestion bar ko suppress karte hain.
-                      *
-                      * FIX 1 (cont.) — INPUT BAR:
-                      * flex-shrink-0 ensures input bar stays at bottom and never gets pushed or hidden.
-                      * On mobile when keyboard opens, the browser shrinks the viewport height —
-                      * because parent uses h-screen + overflow-hidden + flex correctly,
-                      * the input bar stays pinned just above the keyboard naturally (no position:fixed needed).
+                    {/* Input Bar
+                        pb-[72px] on mobile = Sidebar bottom nav (fixed bottom-0) ke upar space
+                        pb-3 on desktop = normal
                     */}
-                    <div className="flex-shrink-0 px-4 py-3 bg-white border-t border-gray-200 flex items-center gap-2">
-                        <button
-                            onClick={() => setShowEmoji(!showEmoji)}
-                            className="text-gray-400 hover:text-pink-500 transition flex-shrink-0"
-                        >
+                    <div className="flex-shrink-0 px-4 pt-3 pb-[72px] md:pb-3 bg-white border-t border-gray-200 flex items-center gap-2">
+                        <button onClick={() => setShowEmoji(!showEmoji)} className="text-gray-400 hover:text-pink-500 transition flex-shrink-0">
                             <Smile size={22} />
                         </button>
-                        <button
-                            onClick={() => imageInputRef.current?.click()}
-                            className="text-gray-400 hover:text-pink-500 transition flex-shrink-0"
-                        >
+                        <button onClick={() => imageInputRef.current?.click()} className="text-gray-400 hover:text-pink-500 transition flex-shrink-0">
                             <ImagePlus size={22} />
                         </button>
-                        <input
-                            ref={imageInputRef}
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={handleImageSelect}
-                        />
+                        <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
                         <input
                             type="text"
                             placeholder="Type a message..."
@@ -1240,6 +1174,7 @@ const ChatBox = () => {
                             <Send size={18} />
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>
