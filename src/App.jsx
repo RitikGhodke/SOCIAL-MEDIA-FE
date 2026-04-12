@@ -15,7 +15,7 @@ import EditProfile from './Components/EditProfile'
 import EditPassword from './Components/EditPassword'
 import ViewProfile from './Components/ViewProfile'
 import Requests from './Components/Requests'
-import Notifications from './components/Notifications'
+// import Notifications from './components/Notifications'
 
 // ✅ Create Context
 export const uiContext = createContext()
@@ -71,7 +71,7 @@ const App = () => {
             <Route path='/chat/:id' element={<ChatBox />} />
             <Route path='/add' element={<NewPost />} />
             <Route path='/review-requests' element={<Requests />} />
-            <Route path="/notifications" element={<Notifications />} />
+            {/* <Route path="/notifications" element={<Notifications />} /> */}
           </Route>
         </Routes>
       </div>
