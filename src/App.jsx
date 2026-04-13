@@ -16,7 +16,6 @@ import EditPassword from './Components/EditPassword'
 import ViewProfile from './Components/ViewProfile'
 import Requests from './Components/Requests'
 import Notifications from './Components/Notification'
-import AddStory from './Components/AddStory'
 
 export const uiContext = createContext()
 
@@ -27,39 +26,26 @@ const App = () => {
   return (
     <uiContext.Provider value={{ ui, setUi, email, setEmail }}>
       <div>
-        {/* ✅ Toast Notifications */}
-        <Toaster 
+        <Toaster
           position="top-center"
           toastOptions={{
             duration: 3000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
+            style: { background: '#363636', color: '#fff' },
             success: {
               duration: 3000,
-              iconTheme: {
-                primary: '#4ade80',
-                secondary: '#fff',
-              },
+              iconTheme: { primary: '#4ade80', secondary: '#fff' },
             },
             error: {
               duration: 3000,
-              iconTheme: {
-                primary: '#ef4444',
-                secondary: '#fff',
-              },
+              iconTheme: { primary: '#ef4444', secondary: '#fff' },
             },
           }}
         />
 
-        {/* ✅ Routes */}
         <Routes>
-          {/* Public Routes */}
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
 
-          {/* Protected Routes */}
           <Route element={<ProtectedRoutes />}>
             <Route path='/' element={<Home />} />
             <Route path='/home' element={<Home />} />
@@ -72,8 +58,6 @@ const App = () => {
             <Route path='/add' element={<NewPost />} />
             <Route path='/review-requests' element={<Requests />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/add-story" element={<AddStory />} />
-            
           </Route>
         </Routes>
       </div>
