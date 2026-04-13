@@ -16,6 +16,7 @@ import EditPassword from './Components/EditPassword'
 import ViewProfile from './Components/ViewProfile'
 import Requests from './Components/Requests'
 import Notifications from './Components/Notification'
+import AddStory from './Components/AddStory'
 
 export const uiContext = createContext()
 
@@ -58,6 +59,7 @@ const App = () => {
             <Route path='/add' element={<NewPost />} />
             <Route path='/review-requests' element={<Requests />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/add-story" element={<AddStory />} />
           </Route>
         </Routes>
       </div>
