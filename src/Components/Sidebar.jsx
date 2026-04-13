@@ -516,20 +516,12 @@ const Sidebar = () => {
             <i className="fa-solid fa-user-group"></i>
             {showSidebar && <span>Review Requests</span>}
           </Link>
-
-          {/* ✅ Notifications with badge */}
-          {/* <Link to="/notifications" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/60 hover:shadow-md transition">
-            <div className="relative">
-              <i className="fa-solid fa-bell"></i>
-              {unreadCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-4 h-4 bg-pink-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                  {unreadCount > 9 ? "9+" : unreadCount}
-                </span>
-              )}
-            </div>
-            {showSidebar && <span>Notifications</span>}
-          </Link> */}
-
+          
+          <Link to="/explore" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/60 hover:shadow-md transition">
+    <i className="fa-solid fa-compass"></i>
+    {showSidebar && <span>Explore</span>}
+</Link>
+          
         </nav>
 
         {showSidebar && (
@@ -568,18 +560,10 @@ const Sidebar = () => {
           <span className="text-[10px] mt-0.5">Chats</span>
         </Link>
 
-        {/* ✅ Notifications with badge — Mobile */}
-        {/* <Link to="/notifications" className="flex flex-col items-center text-gray-600 hover:text-pink-500 transition">
-          <div className="relative">
-            <i className="fa-solid fa-bell text-xl"></i>
-            {unreadCount > 0 && (
-              <span className="absolute -top-2 -right-2 w-4 h-4 bg-pink-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] mt-0.5">Alerts</span>
-        </Link> */}
+         {/* <Link to="/explore" className="flex flex-col items-center text-gray-600 hover:text-pink-500 transition">
+    <i className="fa-solid fa-compass text-xl"></i>
+    <span className="text-[10px] mt-0.5">Explore</span>
+</Link> */}
 
         <Link to="/review-requests" className="flex flex-col items-center text-gray-600 hover:text-pink-500 transition">
           <i className="fa-solid fa-user-group text-xl"></i>

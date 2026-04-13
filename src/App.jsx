@@ -17,6 +17,8 @@ import ViewProfile from './Components/ViewProfile'
 import Requests from './Components/Requests'
 import Notifications from './Components/Notification'
 import AddStory from './Components/AddStory'
+import Explore from './Components/Explore'
+
 
 export const uiContext = createContext()
 
@@ -60,6 +62,7 @@ const App = () => {
             <Route path='/review-requests' element={<Requests />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/add-story" element={<AddStory />} />
+            <Route path="/explore" element={<Explore />} />
           </Route>
         </Routes>
       </div>

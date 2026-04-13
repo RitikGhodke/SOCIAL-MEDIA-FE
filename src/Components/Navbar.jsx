@@ -112,6 +112,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Bell } from 'lucide-react'
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
   const userData = useSelector(store => store.user)
@@ -205,6 +206,12 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
+         
+          <Link to="/explore" className="flex flex-col items-center text-gray-600 hover:text-pink-500 transition">
+             <i className="fa-solid fa-compass text-xl"></i>
+             <span className="text-[10px] mt-0.5"></span>
+         </Link>
 
       {/* Right Section */}
       <div className="flex items-center gap-2 md:gap-4">
